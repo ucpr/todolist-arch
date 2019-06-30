@@ -5,11 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 neovim = "*"
+bpython = "*"
+starlette = "*"
 
 [packages]
-pymysql = "*"
 pytest = "*"
 responder = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

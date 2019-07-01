@@ -7,7 +7,6 @@ import db
 api = responder.API()
 
 
-
 def generate_id(SIZE=8):
     _id = ""
     for i in range(SIZE):
@@ -47,7 +46,6 @@ class Create:
     async def on_post(self, req, resp):
         _id = generate_id()
         data = await req.media()
-        print(data)
         with db.get_connection() as conn:
             new_todo = (
                 _id,
@@ -59,10 +57,12 @@ class Create:
         resp.text = f"http://localhost:5042/todo/{_id}"
 
 
-@api.route("/todo/delete")
+@api.route("/todo/{todo_id}/delete")
 class Delete:
-    def on_delete(self, req, resp):
-        return
+    def on_delete(self, req, resp, *, todo_id):
+        with db.get_connection() as conn:
+            db.delete_todo(conn, todo_id)
+        resp.status_code = api.status_codes.HTTP_204
     
 
 @api.route("/todo/{todo_id}")
